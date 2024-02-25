@@ -33,10 +33,12 @@ void initVM() {
   resetStack();
   // classic
   vm.objects = NULL;
+  initTable(&vm.strings);
 }
 
 void freeVM() {
   // classic
+  freeTable(&vm.strings);
   freeObjects();
 }
 
@@ -155,9 +157,13 @@ static InterpretResult run() {
       }
       push(NUMBER_VAL(-AS_NUMBER(pop())));
       break;
-    case OP_RETURN: {
+    case OP_PRINT: {
       printValue(pop());
       printf("\n");
+      break;
+    }
+    case OP_RETURN: {
+      // exit interpreter
       return INTERPRET_OK;
     }
     }
