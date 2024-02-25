@@ -15,6 +15,7 @@ typedef struct {
   // stackTop always points to where the next value to be pushed will go
   // stackTop = 0 means the stack is empty
   Value *stackTop;
+  Table globals;
   Table strings;
   Obj *objects;
 } VM;
