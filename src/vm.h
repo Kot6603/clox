@@ -2,15 +2,23 @@
 #define clox_vm_h
 
 #include "chunk.h"
+#include "object.h"
 #include "table.h"
 #include "value.h"
 
-#define STACK_MAX 256
+#define FRAMES_MAX 64
+#define STACK_MAX (FRAMES_MAX * UINT8_COUNT)
 
 typedef struct {
-  Chunk *chunk;
-  // ip always points to the next instruction
-  uint8_t *ip; // instruction pointer (program counter)
+  ObjFunction *function;
+  uint8_t *ip;
+  Value *slots;
+} CallFrame;
+
+typedef struct {
+  CallFrame frames[STACK_MAX];
+  int frameCount;
+
   Value stack[STACK_MAX];
   // stackTop always points to where the next value to be pushed will go
   // stackTop = 0 means the stack is empty
